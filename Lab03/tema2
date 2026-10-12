@@ -1,0 +1,165 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMZF3SbwxrKhLtvEr1tngC+",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/dughilamiruna/PMP-2026/blob/main/Lab03/tema2\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd"
+      ],
+      "metadata": {
+        "id": "EDqKHG_EK8CO"
+      },
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Exercitiul 1**"
+      ],
+      "metadata": {
+        "id": "XcsILEkWJHAh"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Extensie Python"
+      ],
+      "metadata": {
+        "id": "zXl2R9wDKOc-"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "N = 100000\n",
+        "X = np.random.randint(1, 7, N)\n",
+        "Y = np.random.randint(1, 7, N)\n",
+        "suma = X + Y\n",
+        "\n",
+        "x_par = (X % 2 == 0)\n",
+        "prob_1 = np.sum((suma >= 10) & x_par) / np.sum(x_par)\n",
+        "print(f\"1. Probabilitate estimată: {prob_1:.4f} | Exactă: {2/9:.4f}\")\n",
+        "\n",
+        "cel_putin_unul_par = (X % 2 == 0) | (Y % 2 == 0)\n",
+        "prob_2 = np.sum((suma >= 10) & cel_putin_unul_par) / np.sum(cel_putin_unul_par)\n",
+        "print(f\"2. Probabilitate estimată: {prob_2:.4f} | Exactă: {5/27:.4f}\")\n",
+        "\n",
+        "ambele_pare = (X % 2 == 0) & (Y % 2 == 0)\n",
+        "prob_3 = np.sum(ambele_pare & (suma == 8)) / np.sum(suma == 8)\n",
+        "print(f\"3. Probabilitate estimată: {prob_3:.4f} | Exactă: {3/5:.4f}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hARlEnMsKLvf",
+        "outputId": "ad8d9b07-1d24-452c-c3dc-970b0250c2e0"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1. Probabilitate estimată: 0.2223 | Exactă: 0.2222\n",
+            "2. Probabilitate estimată: 0.1851 | Exactă: 0.1852\n",
+            "3. Probabilitate estimată: 0.6019 | Exactă: 0.6000\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Exercitiul 3**"
+      ],
+      "metadata": {
+        "id": "R-8hMWwQMp3n"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Extensie Python"
+      ],
+      "metadata": {
+        "id": "2L0xNfHDMtwq"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "nume_fisier = 'simpson.csv'\n",
+        "df = pd.read_csv(nume_fisier)\n",
+        "\n",
+        "df['Rata(%)'] = (df['Recenzii_Pozitive'] / df['Total_Clienți']) * 100\n",
+        "\n",
+        "print(\"1. Analiza pe Subgrupuri\\n\")\n",
+        "print(df[['Restaurant', 'Tip_Client', 'Rata(%)']])\n",
+        "\n",
+        "df_global = df.groupby('Restaurant')[['Recenzii_Pozitive', 'Total_Clienți']].sum().reset_index()\n",
+        "df_global['Rata_Globală(%)'] = (df_global['Recenzii_Pozitive'] / df_global['Total_Clienți']) * 100\n",
+        "\n",
+        "print(\"\\n2. Analiza Globală Agregată\\n\")\n",
+        "print(df_global[['Restaurant', 'Rata_Globală(%)']])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PCekNahGMwIu",
+        "outputId": "be81c5ff-d800-4741-82a2-5e3d339547dc"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1. Analiza pe Subgrupuri\n",
+            "\n",
+            "  Restaurant Tip_Client  Rata(%)\n",
+            "0       Luca   Localnic     80.0\n",
+            "1       Luca     Turist     95.0\n",
+            "2    Harmony   Localnic     70.0\n",
+            "3    Harmony     Turist     85.0\n",
+            "\n",
+            "2. Analiza Globală Agregată\n",
+            "\n",
+            "  Restaurant  Rata_Globală(%)\n",
+            "0    Harmony        83.636364\n",
+            "1       Luca        82.500000\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
