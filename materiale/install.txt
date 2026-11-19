@@ -1,0 +1,4 @@
+!pip install:
+pgmpy — Rețele Bayesiene  
+hmmlearn — Modele Markov Ascunse (HMM)   
+pyAgrum — Rețele Markov neorientate (MRF)
